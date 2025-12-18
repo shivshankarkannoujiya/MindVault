@@ -1,7 +1,19 @@
-import mongoose from "mongoose";
+import mongoose, { Document } from "mongoose";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import { ENV } from "../config/env.js";
 
-const userSchema = new mongoose.Schema(
+interface IUser extends Document {
+    username: string;
+    email: string;
+    password: string;
+    createdAt: Date;
+    updatedAt: Date;
+    isPasswordCorrect(password: string): Promise<boolean>;
+    generateToken(): string;
+}
+
+const userSchema = new mongoose.Schema<IUser>(
     {
         username: {
             type: String,
@@ -17,6 +29,7 @@ const userSchema = new mongoose.Schema(
             trim: true,
             unique: true,
             required: true,
+            lowercase: true,
         },
 
         password: {
@@ -43,4 +56,15 @@ userSchema.methods.isPasswordCorrect = async function (
     return bcrypt.compare(password, this.password);
 };
 
-export const User = mongoose.model("User", userSchema);
+userSchema.methods.generateToken = function () {
+    return jwt.sign(
+        {
+            _id: this._id,
+            email: this.email,
+        },
+        ENV.JWT_SECRET,
+        { expiresIn: ENV.JWT_EXPIRY as any }
+    );
+};
+
+export const User = mongoose.model<IUser>("User", userSchema);
