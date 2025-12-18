@@ -4,7 +4,6 @@ import { User } from "../models/User.model.js";
 import type { Request, Response } from "express";
 import { random } from "../utils/generateRandomStr.js";
 
-// brain/share
 const setShareStatus = async (req: Request, res: Response) => {
     try {
         const { share } = req.body;
@@ -54,7 +53,6 @@ const setShareStatus = async (req: Request, res: Response) => {
     }
 };
 
-// brain/:shareLink
 const shareLink = async (req: Request, res: Response) => {
     const hash = req.params.shareLink;
 
