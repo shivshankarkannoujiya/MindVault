@@ -5,10 +5,12 @@ import PlusIcon from "../icons/PlusIcon";
 import ShareIcon from "../icons/ShareIcon";
 import Card from "../components/Card";
 import SideBar from "../components/SideBar";
-
+import { useContent } from "../hooks/useContent";
 
 const Dashboard = () => {
   const [modalOpen, setModalOpen] = useState(false);
+
+  const { contents, refresh } = useContent();
 
   return (
     <>
@@ -17,6 +19,7 @@ const Dashboard = () => {
         <CreateContentModal
           open={modalOpen}
           onClose={() => setModalOpen(false)}
+          onSuccess={refresh}
         />
         <div className="flex justify-end gap-4 mb-4 ">
           <Button
@@ -33,17 +36,10 @@ const Dashboard = () => {
             className="cursor-pointer"
           />
         </div>
-        <div className="flex gap-5">
-          <Card
-            type="twitter"
-            title="First twwet"
-            link="https://x.com/deedydas/status/2001850593653244011"
-          />
-          <Card
-            type="youtube"
-            title="First video"
-            link="https://youtu.be/Ak1ACaqNtM0"
-          />
+        <div className="flex gap-5 flex-wrap">
+          {contents.map(({ type, link, title }) => (
+            <Card type={type} title={title} link={link} />
+          ))}
         </div>
       </div>
     </>

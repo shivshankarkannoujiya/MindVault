@@ -3,7 +3,7 @@ import { Content } from "../models/Content.model.js";
 
 const createContent = async (req: Request, res: Response) => {
     try {
-        const { title, link } = req.body;
+        const { title, link, type } = req.body;
 
         // @ts-ignore
         const userId = req.user?._id;
@@ -11,6 +11,7 @@ const createContent = async (req: Request, res: Response) => {
         const content = await Content.create({
             title,
             link,
+            type,
             userId,
             tags: [],
         });

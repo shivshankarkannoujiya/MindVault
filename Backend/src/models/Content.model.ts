@@ -18,6 +18,11 @@ const contentSchema = new mongoose.Schema(
             },
         ],
 
+        type: {
+            type: String,
+            required: true,
+        },
+
         userId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
