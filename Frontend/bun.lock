@@ -8,6 +8,7 @@
         "@tailwindcss/vite": "^4.1.18",
         "react": "^19.2.0",
         "react-dom": "^19.2.0",
+        "react-twitter-embed": "^4.0.4",
         "tailwindcss": "^4.1.18",
       },
       "devDependencies": {
@@ -475,11 +476,15 @@
 
     "react-refresh": ["react-refresh@0.18.0", "", {}, "sha512-QgT5//D3jfjJb6Gsjxv0Slpj23ip+HtOpnNgnb2S5zU3CB26G/IDPGoy4RJB42wzFE46DRsstbW6tKHoKbhAxw=="],
 
+    "react-twitter-embed": ["react-twitter-embed@4.0.4", "", { "dependencies": { "scriptjs": "^2.5.9" }, "peerDependencies": { "react": "^16.0.0 || ^17.0.0 || ^18.0.0", "react-dom": "^16.0.0 || ^17.0.0 || ^18.0.0" } }, "sha512-2JIL7qF+U62zRzpsh6SZDXNI3hRNVYf5vOZ1WRcMvwKouw+xC00PuFaD0aEp2wlyGaZ+f4x2VvX+uDadFQ3HVA=="],
+
     "resolve-from": ["resolve-from@4.0.0", "", {}, "sha512-pb/MYmXstAkysRFx8piNI1tGFNQIFA3vkE3Gq4EuA1dF6gHp/+vgZqsCGJapvy8N3Q+4o7FwvquPJcnZ7RYy4g=="],
 
     "rollup": ["rollup@4.53.5", "", { "dependencies": { "@types/estree": "1.0.8" }, "optionalDependencies": { "@rollup/rollup-android-arm-eabi": "4.53.5", "@rollup/rollup-android-arm64": "4.53.5", "@rollup/rollup-darwin-arm64": "4.53.5", "@rollup/rollup-darwin-x64": "4.53.5", "@rollup/rollup-freebsd-arm64": "4.53.5", "@rollup/rollup-freebsd-x64": "4.53.5", "@rollup/rollup-linux-arm-gnueabihf": "4.53.5", "@rollup/rollup-linux-arm-musleabihf": "4.53.5", "@rollup/rollup-linux-arm64-gnu": "4.53.5", "@rollup/rollup-linux-arm64-musl": "4.53.5", "@rollup/rollup-linux-loong64-gnu": "4.53.5", "@rollup/rollup-linux-ppc64-gnu": "4.53.5", "@rollup/rollup-linux-riscv64-gnu": "4.53.5", "@rollup/rollup-linux-riscv64-musl": "4.53.5", "@rollup/rollup-linux-s390x-gnu": "4.53.5", "@rollup/rollup-linux-x64-gnu": "4.53.5", "@rollup/rollup-linux-x64-musl": "4.53.5", "@rollup/rollup-openharmony-arm64": "4.53.5", "@rollup/rollup-win32-arm64-msvc": "4.53.5", "@rollup/rollup-win32-ia32-msvc": "4.53.5", "@rollup/rollup-win32-x64-gnu": "4.53.5", "@rollup/rollup-win32-x64-msvc": "4.53.5", "fsevents": "~2.3.2" }, "bin": { "rollup": "dist/bin/rollup" } }, "sha512-iTNAbFSlRpcHeeWu73ywU/8KuU/LZmNCSxp6fjQkJBD3ivUb8tpDrXhIxEzA05HlYMEwmtaUnb3RP+YNv162OQ=="],
 
     "scheduler": ["scheduler@0.27.0", "", {}, "sha512-eNv+WrVbKu1f3vbYJT/xtiF5syA5HPIMtf9IgY/nKg0sWqzAUEvqY/xm7OcZc/qafLx/iO9FgOmeSAp4v5ti/Q=="],
+
+    "scriptjs": ["scriptjs@2.5.9", "", {}, "sha512-qGVDoreyYiP1pkQnbnFAUIS5AjenNwwQBdl7zeos9etl+hYKWahjRTfzAZZYBv5xNHx7vNKCmaLDQZ6Fr2AEXg=="],
 
     "semver": ["semver@6.3.1", "", { "bin": { "semver": "bin/semver.js" } }, "sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA=="],
 
