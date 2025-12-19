@@ -1,5 +1,7 @@
+import { Link } from "react-router-dom";
 import Button from "../components/Button";
 import Input from "../components/Input";
+
 
 const Signup = () => {
 
@@ -31,9 +33,9 @@ const Signup = () => {
 
         <div className="text-center mt-4 text-sm text-slate-600">
           Already have an account?{" "}
-          <a href="/signin" className="text-purple-600 hover:underline">
+          <Link to="/signin" className="text-purple-600 hover:underline">
             Sign in
-          </a>
+          </Link>
         </div>
       </div>
     </div>

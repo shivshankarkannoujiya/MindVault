@@ -1,5 +1,6 @@
 import Button from "../components/Button";
 import Input from "../components/Input";
+import { Link } from "react-router-dom";
 
 const Signin = () => {
   return (
@@ -16,18 +17,22 @@ const Signin = () => {
           <Input placeholder="123456" type="password" label="Password" />
 
           <div className="pt-4">
-            <Button varient="primary" text="Sign In" className="w-full" />
+            <Button
+              varient="primary"
+              text="Sign In"
+              className="w-full cursor-pointer"
+            />
           </div>
         </div>
 
         <div className="text-center mt-6 text-sm text-slate-600">
           Don't have an account?{" "}
-          <a
-            href="/signup"
+          <Link
+            to="/signup"
             className="text-purple-600 hover:underline font-medium"
           >
             Sign up
-          </a>
+          </Link>
         </div>
       </div>
     </div>
