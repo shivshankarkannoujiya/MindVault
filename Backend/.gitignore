@@ -6,6 +6,8 @@ yarn.lock
 # Build outputs
 dist/
 build/
+tsconfig.tsbuildinfo
+
 
 # Environment variables
 .env
