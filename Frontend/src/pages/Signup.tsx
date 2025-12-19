@@ -1,12 +1,14 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import axios from "axios";
 import { useRef, useState } from "react";
 import { BACKEND_URL } from "../config";
 
+
 const Signup = () => {
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate()
 
   const usernameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
@@ -26,6 +28,8 @@ const Signup = () => {
         password,
       });
 
+      navigate("/signin");
+
       console.log(response.data.message);
       console.log(response.data.user);
     } catch (error) {
@@ -33,6 +37,8 @@ const Signup = () => {
     } finally {
       setLoading(false);
     }
+
+
   };
 
   return (

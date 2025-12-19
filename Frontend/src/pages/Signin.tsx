@@ -1,8 +1,49 @@
+import { useRef, useState } from "react";
 import Button from "../components/Button";
 import Input from "../components/Input";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { BACKEND_URL } from "../config";
+import axios from "axios";
 
 const Signin = () => {
+  const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+
+  const handleLogin = async () => {
+    const email = emailRef.current?.value;
+    const password = passwordRef.current?.value;
+
+    setLoading(true);
+
+    try {
+      const response = await axios.post(
+        `${BACKEND_URL}/users/login`,
+        {
+          email,
+          password,
+        },
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      navigate("/dashboard");
+
+      console.log(response.data.message);
+      console.log(response.data);
+    } catch (error) {
+      console.error(`Error signing...`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="h-screen w-screen bg-slate-200 flex justify-center items-center">
       <div className="bg-white rounded-xl border border-gray-200 min-w-80 p-8 shadow-lg w-full max-w-md">
@@ -12,15 +53,29 @@ const Signin = () => {
         </div>
 
         <div className="flex flex-col gap-6">
-          <Input placeholder="example@gmail.com" label="Email" />
+          <Input
+            ref={emailRef}
+            placeholder="example@gmail.com"
+            label="Email"
+            type="email"
+          />
 
-          <Input placeholder="123456" type="password" label="Password" />
+          <Input
+            ref={passwordRef}
+            placeholder="123456"
+            type="password"
+            label="Password"
+          />
 
           <div className="pt-4">
             <Button
+              onClick={handleLogin}
               varient="primary"
-              text="Sign In"
-              className="w-full cursor-pointer"
+              text={loading ? `Signing...` : "Sign in"}
+              className={`w-full ${
+                loading ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+              }`}
+              disabled={loading}
             />
           </div>
         </div>
