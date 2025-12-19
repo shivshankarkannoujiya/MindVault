@@ -22,11 +22,13 @@ const LandingPage = () => {
             onClick={() => navigate("/signin")}
             varient="secondary"
             text="Login"
+            className="font-medium"
           />
           <Button
             onClick={() => navigate("/signup")}
             varient="primary"
             text="Get Started"
+            className="font-medium"
           />
         </div>
       </nav>
@@ -48,12 +50,12 @@ const LandingPage = () => {
             onClick={() => navigate("/signup")}
             varient="primary"
             text="Start for Free"
-            className="px-8 py-3 text-lg"
+            className="px-8 py-3 text-lg font-medium"
           />
           <Button
             varient="secondary"
             text="View Demo"
-            className="px-8 py-3 text-lg"
+            className="px-8 py-3 text-lg font-medium"
           />
         </div>
       </header>

@@ -1,9 +1,39 @@
 import { Link } from "react-router-dom";
 import Button from "../components/Button";
 import Input from "../components/Input";
-
+import axios from "axios";
+import { useRef, useState } from "react";
+import { BACKEND_URL } from "../config";
 
 const Signup = () => {
+  const [loading, setLoading] = useState(false);
+
+  const usernameRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+
+  const handleSignUp = async () => {
+    const username = usernameRef.current?.value;
+    const email = emailRef.current?.value;
+    const password = passwordRef.current?.value;
+
+    setLoading(true);
+
+    try {
+      const response = await axios.post(`${BACKEND_URL}/users/register`, {
+        username,
+        email,
+        password,
+      });
+
+      console.log(response.data.message);
+      console.log(response.data.user);
+    } catch (error) {
+      console.error("Signup failed:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="h-screen w-screen bg-slate-200 flex justify-center items-center">
@@ -18,15 +48,34 @@ const Signup = () => {
         </div>
 
         <div className="flex flex-col gap-4">
-          <Input placeholder="Username" label="Username" />
-          <Input placeholder="Email" label="Email" type="email" />
-          <Input placeholder="Password" type="password" label="Password" />
+          <Input
+            ref={usernameRef}
+            placeholder="Username"
+            label="Username"
+            type="text"
+          />
+          <Input
+            ref={emailRef}
+            placeholder="Email"
+            label="Email"
+            type="email"
+          />
+          <Input
+            ref={passwordRef}
+            placeholder="Password"
+            type="password"
+            label="Password"
+          />
 
           <div className="pt-4">
             <Button
+              onClick={handleSignUp}
               varient="primary"
-              text="Sign Up"
-              className="w-full cursor-pointer"
+              text={loading ? `Signing up...` : `Sign up`}
+              className={`w-full ${
+                loading ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+              }`}
+              disabled={loading}
             />
           </div>
         </div>
