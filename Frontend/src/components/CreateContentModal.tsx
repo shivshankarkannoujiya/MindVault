@@ -39,7 +39,7 @@ const CreateContentModal = ({
     setLoading(true);
 
     try {
-      const response = await axios.post(
+      await axios.post(
         `${BACKEND_URL}/contents/create`,
         {
           title,
