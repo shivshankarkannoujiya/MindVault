@@ -12,9 +12,11 @@ import ShareLinkModal from "../components/ShareLinkModal";
 import LoadingIcon from "../icons/LoadingIcon";
 import ConfirmationModal from "../components/ConfirmationModal";
 import toast from "react-hot-toast";
-
+import SearchBar from "../components/SearchBar";
 
 const Dashboard = () => {
+  const { contents, refresh } = useContent();
+
   const [modalOpen, setModalOpen] = useState(false);
 
   const [shareModalOpen, setShareModalOpen] = useState(false);
@@ -28,7 +30,11 @@ const Dashboard = () => {
   const [contentToDelete, setContentToDelete] = useState<string | null>(null);
   const [deleteLoading, setDeleteLoading] = useState(false);
 
-  const { contents, refresh } = useContent();
+  const [filter, setFilter] = useState("");
+
+  const filteredContents = contents.filter((content) =>
+    content.title.toLowerCase().includes(filter.toLowerCase())
+  );
 
   const shareBrain = async () => {
     try {
@@ -148,6 +154,11 @@ const Dashboard = () => {
             <div className="text-2xl font-bold text-gray-800">My Brain</div>
 
             <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+              <SearchBar
+                value={filter}
+                onChange={(e) => setFilter(e.target.value)}
+              />
+
               <Button
                 onClick={() => setModalOpen(true)}
                 varient="primary"
@@ -164,8 +175,15 @@ const Dashboard = () => {
               />
             </div>
           </div>
+
+          {filteredContents.length === 0 && filter && (
+            <div className="flex flex-col items-center justify-center mt-20 text-gray-500">
+              <p className="text-lg">No content found matching "{filter}"</p>
+            </div>
+          )}
+
           <div className="flex flex-wrap justify-center gap-6 pb-8">
-            {contents.map(({ type, link, title, _id }) => (
+            {filteredContents.map(({ type, link, title, _id }) => (
               <Card
                 key={_id}
                 type={type}
