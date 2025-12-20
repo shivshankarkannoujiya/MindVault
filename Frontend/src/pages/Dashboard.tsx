@@ -9,6 +9,7 @@ import { useContent } from "../hooks/useContent";
 import axios from "axios";
 import { BACKEND_URL, FRONTEND_URL } from "../config";
 import ShareLinkModal from "../components/ShareLinkModal";
+import LoadingIcon from "../icons/LoadingIcon";
 
 const Dashboard = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -69,14 +70,14 @@ const Dashboard = () => {
             varient="primary"
             text="Add content"
             startIcon={<PlusIcon />}
-            className="cursor-pointer"
+            className="cursor-pointer min-w-40 flex items-center justify-center font-medium"
           />
           <Button
             onClick={shareBrain}
             varient="secondary"
             text={isSharing ? `Generating...` : `Share Brain`}
-            startIcon={<ShareIcon />}
-            className="cursor-pointer"
+            startIcon={isSharing ? <LoadingIcon /> : <ShareIcon />}
+            className="cursor-pointer min-w-40 flex items-center justify-center font-medium"
           />
         </div>
         <div className="flex gap-5 flex-wrap">
