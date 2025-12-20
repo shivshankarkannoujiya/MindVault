@@ -6,10 +6,16 @@ import { useEffect, useState } from "react";
 interface ShareLinkModalProps {
   open: boolean;
   onClose: () => void;
+  onDisableShare: () => void;
   shareUrl: string;
 }
 
-const ShareLinkModal = ({ open, onClose, shareUrl }: ShareLinkModalProps) => {
+const ShareLinkModal = ({
+  open,
+  onClose,
+  shareUrl,
+  onDisableShare,
+}: ShareLinkModalProps) => {
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
@@ -58,9 +64,21 @@ const ShareLinkModal = ({ open, onClose, shareUrl }: ShareLinkModalProps) => {
                 onClick={handleCopy}
                 text={copied ? `Copied!` : `Copy`}
                 varient="primary"
-                className="w-full justify-center"
+                className="w-full justify-center cursor-pointer"
               />
             </div>
+          </div>
+
+          <div className="border-t border-gray-100 pt-4">
+            <Button
+              onClick={() => {
+                onDisableShare();
+                onClose();
+              }}
+              varient="danger"
+              text="Stop Sharing"
+              className="w-full justify-center font-medium cursor-pointer"
+            />
           </div>
         </div>
       </div>
