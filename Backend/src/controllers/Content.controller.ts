@@ -71,7 +71,7 @@ const getContent = async (req: Request, res: Response) => {
 
 const deleteContent = async (req: Request, res: Response) => {
     try {
-        const { contentId } = req.body;
+        const contentId = req.params.contentId;
 
         // @ts-ignore
         const userId = req.user?._id;

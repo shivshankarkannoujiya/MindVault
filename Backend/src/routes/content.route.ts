@@ -12,6 +12,6 @@ router.use(verifyJWT);
 
 router.route("/create").post(createContent);
 router.route("/").get(getContent);
-router.route("/").delete(deleteContent);
+router.route("/:contentId").delete(deleteContent);
 
 export default router;
