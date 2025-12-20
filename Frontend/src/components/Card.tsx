@@ -3,6 +3,8 @@ import TrashIcon from "../icons/TrashIcon";
 import XIcon from "../icons/XIcon";
 import Tweet from "./Tweet";
 import YoutubeIcon from "../icons/YoutubeIcon";
+import toast from "react-hot-toast";
+
 interface CardProps {
   title: string;
   link: string;
@@ -16,12 +18,16 @@ const getYouTubeId = (link: string) => {
   return match && match[2].length === 11 ? match[2] : null;
 };
 
-const Card = ({
-  title,
-  link,
-  type = "twitter",
-  onDelete,
-}: CardProps) => {
+const Card = ({ title, link, type = "twitter", onDelete }: CardProps) => {
+  const handleShareSingleCardLink = async () => {
+    try {
+      navigator.clipboard.writeText(link);
+      toast.success(`Link copied to clipboard!`);
+    } catch (error) {
+      toast.error(`Failed to copy link`);
+    }
+  };
+
   return (
     <div className="bg-white rounded-md shadow-md border border-slate-200 w-72 overflow-hidden flex flex-col hover:shadow-lg transition-shadow duration-200">
       <div className="flex justify-between items-center p-4 bg-white border-b border-slate-100 z-10">
@@ -39,7 +45,10 @@ const Card = ({
           <span className="truncate">{title}</span>
         </div>
         <div className="flex gap-2">
-          <div className="text-gray-400 cursor-pointer hover:text-purple-600 transition">
+          <div
+            onClick={handleShareSingleCardLink}
+            className="text-gray-400 cursor-pointer hover:text-purple-600 transition"
+          >
             <ShareIcon />
           </div>
           <div
