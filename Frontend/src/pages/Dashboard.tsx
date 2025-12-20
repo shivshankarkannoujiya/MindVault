@@ -6,11 +6,46 @@ import ShareIcon from "../icons/ShareIcon";
 import Card from "../components/Card";
 import SideBar from "../components/SideBar";
 import { useContent } from "../hooks/useContent";
+import axios from "axios";
+import { BACKEND_URL, FRONTEND_URL } from "../config";
+import ShareLinkModal from "../components/ShareLinkModal";
 
 const Dashboard = () => {
   const [modalOpen, setModalOpen] = useState(false);
 
+  const [shareModalOpen, setShareModalOpen] = useState(false);
+  const [shareUrl, setShareUrl] = useState("");
+  const [isSharing, setIsSharing] = useState(false);
+
   const { contents, refresh } = useContent();
+
+  const shareBrain = async () => {
+    try {
+      setIsSharing(true);
+
+      const response = await axios.post(
+        `${BACKEND_URL}/brain/share`,
+        {
+          share: true,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+
+      console.log(`URL: `, response.data?.hash);
+      const shareUrl = `${FRONTEND_URL}/share/${response.data.hash}`;
+
+      setShareUrl(shareUrl);
+      setShareModalOpen(true);
+
+      await navigator.clipboard.writeText(shareUrl);
+    } catch (error) {
+      console.error(`Failed to generate share link`, error);
+    } finally {
+      setIsSharing(false);
+    }
+  };
 
   return (
     <>
@@ -21,6 +56,13 @@ const Dashboard = () => {
           onClose={() => setModalOpen(false)}
           onSuccess={refresh}
         />
+
+        <ShareLinkModal
+          open={shareModalOpen}
+          onClose={() => setShareModalOpen(false)}
+          shareUrl={shareUrl}
+        />
+
         <div className="flex justify-end gap-4 mb-4 ">
           <Button
             onClick={() => setModalOpen(true)}
@@ -30,15 +72,16 @@ const Dashboard = () => {
             className="cursor-pointer"
           />
           <Button
+            onClick={shareBrain}
             varient="secondary"
-            text="Share Brain"
+            text={isSharing ? `Generating...` : `Share Brain`}
             startIcon={<ShareIcon />}
             className="cursor-pointer"
           />
         </div>
         <div className="flex gap-5 flex-wrap">
-          {contents.map(({ type, link, title }) => (
-            <Card type={type} title={title} link={link} />
+          {contents.map(({ type, link, title }, idx) => (
+            <Card key={idx} type={type} title={title} link={link} />
           ))}
         </div>
       </div>
