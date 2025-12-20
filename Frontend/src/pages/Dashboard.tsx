@@ -48,46 +48,65 @@ const Dashboard = () => {
     }
   };
 
-  return (
-    <>
-      <SideBar />
-      <div className="p-4 ml-72 min-h-screen bg-gray-100">
-        <CreateContentModal
-          open={modalOpen}
-          onClose={() => setModalOpen(false)}
-          onSuccess={refresh}
-        />
+return (
+  <>
+    <SideBar />
 
-        <ShareLinkModal
-          open={shareModalOpen}
-          onClose={() => setShareModalOpen(false)}
-          shareUrl={shareUrl}
-        />
+    {/* 1. 'min-h-screen bg-gray-100': Full height background
+         2. 'p-4': Padding for mobile
+         3. 'md:ml-72': On desktop, leave space for sidebar. On mobile, full width.
+      */}
+    <div className="min-h-screen bg-gray-100 p-4 md:ml-72 transition-all duration-300">
+      <CreateContentModal
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        onSuccess={refresh}
+      />
 
-        <div className="flex justify-end gap-4 mb-4 ">
-          <Button
-            onClick={() => setModalOpen(true)}
-            varient="primary"
-            text="Add content"
-            startIcon={<PlusIcon />}
-            className="cursor-pointer min-w-40 flex items-center justify-center font-medium"
-          />
-          <Button
-            onClick={shareBrain}
-            varient="secondary"
-            text={isSharing ? `Generating...` : `Share Brain`}
-            startIcon={isSharing ? <LoadingIcon /> : <ShareIcon />}
-            className="cursor-pointer min-w-40 flex items-center justify-center font-medium"
-          />
+      <ShareLinkModal
+        open={shareModalOpen}
+        onClose={() => setShareModalOpen(false)}
+        shareUrl={shareUrl}
+      />
+
+      {/* Main Width Container */}
+      <div className="max-w-6xl mx-auto mt-6">
+        {/* Header: Title + Buttons */}
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+          <div className="text-2xl font-bold text-gray-800">My Brain</div>
+
+          <div className="flex gap-4 w-full sm:w-auto">
+            <Button
+              onClick={() => setModalOpen(true)}
+              varient="primary"
+              text="Add content"
+              startIcon={<PlusIcon />}
+              className="cursor-pointer min-w-32 md:min-w-40 flex items-center justify-center font-medium flex-1 sm:flex-none"
+            />
+            <Button
+              onClick={shareBrain}
+              varient="secondary"
+              text={isSharing ? "Generating..." : "Share Brain"}
+              startIcon={isSharing ? <LoadingIcon /> : <ShareIcon />}
+              className="cursor-pointer min-w-32 md:min-w-40 flex items-center justify-center font-medium flex-1 sm:flex-none"
+            />
+          </div>
         </div>
-        <div className="flex gap-5 flex-wrap">
+
+        {/* Masonry Grid Layout */}
+        {/* columns-1 (mobile) -> columns-3 (desktop) */}
+        <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
           {contents.map(({ type, link, title }, idx) => (
-            <Card key={idx} type={type} title={title} link={link} />
+            // 'break-inside-avoid' prevents cards from being cut in half across columns
+            <div key={idx} className="break-inside-avoid mb-6">
+              <Card type={type} title={title} link={link} />
+            </div>
           ))}
         </div>
       </div>
-    </>
-  );
+    </div>
+  </>
+);
 };
 
 export default Dashboard;
