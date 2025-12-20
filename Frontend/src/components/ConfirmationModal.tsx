@@ -7,6 +7,7 @@ interface ConfirmationModalProps {
   title: string;
   message: string;
   loading?: boolean;
+  confirmText?: string;
   onClose: () => void;
   onConfirm: () => void;
 }
@@ -18,6 +19,7 @@ const ConfirmationModal = ({
   title,
   message,
   loading,
+  confirmText = "Confirm",
 }: ConfirmationModalProps) => {
   if (!open) return null;
 
@@ -53,7 +55,7 @@ const ConfirmationModal = ({
             <div className="flex-1">
               <Button
                 onClick={onConfirm}
-                text={loading ? `Processing...` : `Confirm`}
+                text={loading ? `Processing...` : confirmText}
                 varient="danger"
                 className="w-full justify-center cursor-pointer"
               />

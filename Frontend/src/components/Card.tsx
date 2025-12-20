@@ -3,10 +3,10 @@ import TrashIcon from "../icons/TrashIcon";
 import XIcon from "../icons/XIcon";
 import Tweet from "./Tweet";
 import YoutubeIcon from "../icons/YoutubeIcon";
-
 interface CardProps {
   title: string;
   link: string;
+  onDelete: () => void;
   type: "twitter" | "youtube";
 }
 
@@ -16,7 +16,12 @@ const getYouTubeId = (link: string) => {
   return match && match[2].length === 11 ? match[2] : null;
 };
 
-const Card = ({ title, link, type = "twitter" }: CardProps) => {
+const Card = ({
+  title,
+  link,
+  type = "twitter",
+  onDelete,
+}: CardProps) => {
   return (
     <div className="bg-white rounded-md shadow-md border border-slate-200 w-72 overflow-hidden flex flex-col hover:shadow-lg transition-shadow duration-200">
       <div className="flex justify-between items-center p-4 bg-white border-b border-slate-100 z-10">
@@ -37,7 +42,10 @@ const Card = ({ title, link, type = "twitter" }: CardProps) => {
           <div className="text-gray-400 cursor-pointer hover:text-purple-600 transition">
             <ShareIcon />
           </div>
-          <div className="text-gray-400 cursor-pointer hover:text-red-500 transition">
+          <div
+            onClick={() => onDelete()}
+            className="text-gray-400 cursor-pointer hover:text-red-500 transition"
+          >
             <TrashIcon />
           </div>
         </div>

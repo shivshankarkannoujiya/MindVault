@@ -22,6 +22,10 @@ const Dashboard = () => {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [disableShareLoading, setDisableShareLoading] = useState(false);
 
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [contentToDelete, setContentToDelete] = useState<string | null>(null);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+
   const { contents, refresh } = useContent();
 
   const shareBrain = async () => {
@@ -77,6 +81,30 @@ const Dashboard = () => {
     }
   };
 
+  const openDeleteModal = (contentId: string) => {
+    setContentToDelete(contentId);
+    setDeleteModalOpen(true);
+  };
+
+  const handleDelete = async () => {
+    if (!contentToDelete) return;
+
+    setDeleteLoading(true);
+
+    try {
+      await axios.delete(`${BACKEND_URL}/contents/${contentToDelete}`, {
+        withCredentials: true,
+      });
+      await refresh();
+      setDeleteModalOpen(false);
+      setContentToDelete(null);
+    } catch (error) {
+      console.error(`Error deleting content: `, error);
+    } finally {
+      setDeleteLoading(false);
+    }
+  };
+
   return (
     <>
       <SideBar />
@@ -103,6 +131,16 @@ const Dashboard = () => {
           message={`This will make your shared link invalid. No one will be able to access your public page anymore`}
         />
 
+        <ConfirmationModal
+          open={deleteModalOpen}
+          onClose={() => setDeleteModalOpen(false)}
+          onConfirm={handleDelete}
+          loading={deleteLoading}
+          title={`Delete Content`}
+          message={`Are you sure you want to delete this content?`}
+          confirmText="Delete"
+        />
+
         <div className="max-w-5xl mx-auto mt-6">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
             <div className="text-2xl font-bold text-gray-800">My Brain</div>
@@ -125,8 +163,14 @@ const Dashboard = () => {
             </div>
           </div>
           <div className="flex flex-wrap justify-center gap-6 pb-8">
-            {contents.map(({ type, link, title }, idx) => (
-              <Card key={idx} type={type} title={title} link={link} />
+            {contents.map(({ type, link, title, _id }) => (
+              <Card
+                key={_id}
+                type={type}
+                title={title}
+                link={link}
+                onDelete={() => openDeleteModal(_id)}
+              />
             ))}
           </div>
         </div>
