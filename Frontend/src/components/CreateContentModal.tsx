@@ -4,6 +4,7 @@ import Button from "./Button";
 import Input from "./Input";
 import axios from "axios";
 import { BACKEND_URL } from "../config";
+import toast from "react-hot-toast";
 
 interface CreateContentModalProps {
   open: boolean;
@@ -30,6 +31,11 @@ const CreateContentModal = ({
     const title = titleRef.current?.value;
     const link = linkRef.current?.value;
 
+    if (!title || !link) {
+      toast.error("Please fill in all fields");
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -49,10 +55,9 @@ const CreateContentModal = ({
       );
       onSuccess();
       onClose();
-      console.log(response.data.message);
-      console.log(response.data.content);
+      toast.success("Content added to your brain");
     } catch (error) {
-      console.error(`Error while adding content....`);
+      toast.error("Failed to add content");
     } finally {
       setLoading(false);
     }
@@ -61,7 +66,6 @@ const CreateContentModal = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
       <div className="bg-white w-full max-w-md p-6 rounded-xl shadow-2xl relative flex flex-col">
-        {/* Close Button */}
         <div
           onClick={onClose}
           className="absolute top-4 right-4 text-slate-500 hover:text-black cursor-pointer transition-colors"

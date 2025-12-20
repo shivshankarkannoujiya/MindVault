@@ -1,7 +1,9 @@
+import toast from "react-hot-toast";
 import CrossIcon from "../icons/CrossIcon";
 import Button from "./Button";
 import Input from "./Input";
 import { useEffect, useState } from "react";
+
 
 interface ShareLinkModalProps {
   open: boolean;
@@ -30,8 +32,9 @@ const ShareLinkModal = ({
     try {
       await navigator.clipboard.writeText(shareUrl);
       setCopied(true);
+      toast.success("Public link copied to clipboard");
     } catch (error) {
-      console.error("Failed to copy:", error);
+      toast.error("Failed to generate link");
     }
   };
 

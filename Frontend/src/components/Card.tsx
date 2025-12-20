@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 interface CardProps {
   title: string;
   link: string;
-  onDelete: () => void;
+  onDelete?: () => void;
   type: "twitter" | "youtube";
 }
 
@@ -51,12 +51,15 @@ const Card = ({ title, link, type = "twitter", onDelete }: CardProps) => {
           >
             <ShareIcon />
           </div>
-          <div
-            onClick={() => onDelete()}
-            className="text-gray-400 cursor-pointer hover:text-red-500 transition"
-          >
-            <TrashIcon />
-          </div>
+          {onDelete && (
+            <div
+              onClick={() => onDelete()}
+              className="text-gray-400 cursor-pointer hover:text-red-500 transition"
+              title="Delete content"
+            >
+              <TrashIcon />
+            </div>
+          )}
         </div>
       </div>
 

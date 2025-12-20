@@ -11,6 +11,8 @@ import { BACKEND_URL, FRONTEND_URL } from "../config";
 import ShareLinkModal from "../components/ShareLinkModal";
 import LoadingIcon from "../icons/LoadingIcon";
 import ConfirmationModal from "../components/ConfirmationModal";
+import toast from "react-hot-toast";
+
 
 const Dashboard = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -42,7 +44,6 @@ const Dashboard = () => {
         }
       );
 
-      console.log(`URL: `, response.data?.hash);
       const shareUrl = `${FRONTEND_URL}/share/${response.data.hash}`;
 
       setShareUrl(shareUrl);
@@ -50,7 +51,7 @@ const Dashboard = () => {
 
       await navigator.clipboard.writeText(shareUrl);
     } catch (error) {
-      console.error(`Failed to generate share link`, error);
+      toast.error(`Failed to generate share link`);
     } finally {
       setIsSharing(false);
     }
@@ -73,9 +74,9 @@ const Dashboard = () => {
       );
       setShareUrl("");
       setShowConfirmModal(false);
-      console.log("Brain is now private.");
+      toast.success("Brain is now private");
     } catch (error) {
-      console.error(`ERROR DISABLING SHAREURL: `, error);
+      toast.error("Failed to update privacy");
     } finally {
       setDisableShareLoading(false);
     }
@@ -98,8 +99,9 @@ const Dashboard = () => {
       await refresh();
       setDeleteModalOpen(false);
       setContentToDelete(null);
+      toast.success("Content deleted successfully");
     } catch (error) {
-      console.error(`Error deleting content: `, error);
+      toast.error("Failed to delete content");
     } finally {
       setDeleteLoading(false);
     }
