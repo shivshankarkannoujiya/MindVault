@@ -4,9 +4,12 @@ import Input from "../components/Input";
 import { Link, useNavigate } from "react-router-dom";
 import { BACKEND_URL } from "../config";
 import axios from "axios";
+import { useAuth } from "../context/AuthProvider";
 
 const Signin = () => {
   const [loading, setLoading] = useState(false);
+
+  const { refresh } = useAuth();
 
   const navigate = useNavigate();
   const emailRef = useRef<HTMLInputElement>(null);
@@ -19,7 +22,7 @@ const Signin = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post(
+      await axios.post(
         `${BACKEND_URL}/users/login`,
         {
           email,
@@ -33,10 +36,8 @@ const Signin = () => {
         }
       );
 
+      await refresh();
       navigate("/dashboard");
-
-      console.log(response.data.message);
-      console.log(response.data);
     } catch (error) {
       console.error(`Error signing...`);
     } finally {
