@@ -17,6 +17,7 @@ interface AuthContextType {
   user: User | null;
   loading: boolean;
   refresh: () => Promise<void>;
+  logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -24,8 +25,10 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const fetchUser = async () => {
+    if (isLoggingOut) return;
     try {
       const response = await axios.get(`${BACKEND_URL}/users/me`, {
         withCredentials: true,
@@ -41,12 +44,28 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const logout = async () => {
+    setIsLoggingOut(true);
+    try {
+      await axios.post(
+        `${BACKEND_URL}/users/logout`,
+        {},
+        {
+          withCredentials: true,
+        }
+      );
+    } finally {
+      setUser(null);
+      window.location.href = "/";
+    }
+  };
+
   useEffect(() => {
     fetchUser();
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, loading, refresh: fetchUser }}>
+    <AuthContext.Provider value={{ user, loading, refresh: fetchUser, logout }}>
       {children}
     </AuthContext.Provider>
   );

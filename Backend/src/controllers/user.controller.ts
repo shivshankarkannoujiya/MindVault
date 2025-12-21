@@ -149,4 +149,23 @@ const getMe = async (req: Request, res: Response) => {
     }
 };
 
-export { registerUser, loginUser, getMe };
+const logoutUser = async (req: Request, res: Response) => {
+    try {
+        res.clearCookie("accessToken", cookieOptions);
+        return res.status(200).json({
+            success: true,
+            message: "User logged out successfully",
+        });
+    } catch (error) {
+        console.error("ERROR LOGOUT USER: ", error);
+        return res.status(500).json({
+            success: false,
+            message:
+                error instanceof Error
+                    ? error.message
+                    : "Internal server error",
+        });
+    }
+};
+
+export { registerUser, loginUser, getMe, logoutUser };

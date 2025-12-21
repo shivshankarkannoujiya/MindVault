@@ -1,6 +1,7 @@
 import { useAuth } from "../context/AuthProvider";
 import GridIcon from "../icons/GridIcon";
 import Logo from "../icons/Logo";
+import LogoutIcon from "../icons/LogoutIcon";
 import XIcon from "../icons/XIcon";
 import YoutubeIcon from "../icons/YoutubeIcon";
 import SidebarItem from "./SidebarItem";
@@ -11,7 +12,7 @@ interface SideBarProps {
 }
 
 const SideBar = ({ selectedType, onSelect }: SideBarProps) => {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
 
   return (
     <div className="fixed left-0 top-0 w-72 h-screen bg-white border-r border-gray-200 p-6 hidden md:flex flex-col justify-between">
@@ -61,6 +62,15 @@ const SideBar = ({ selectedType, onSelect }: SideBarProps) => {
             </span>
             <span className="text-xs text-gray-500">{user.email}</span>
           </div>
+
+          <button
+            onClick={logout}
+            className="p-2 text-red-300 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors duration-200 cursor-pointer"
+            title="Logout"
+            aria-label="Logout"
+          >
+            <LogoutIcon />
+          </button>
         </div>
       )}
     </div>
