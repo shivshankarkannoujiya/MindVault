@@ -14,6 +14,8 @@ import ConfirmationModal from "../components/ConfirmationModal";
 import toast from "react-hot-toast";
 import SearchBar from "../components/SearchBar";
 
+type FilterType = "all" | "twitter" | "youtube";
+
 const Dashboard = () => {
   const { contents, refresh } = useContent();
 
@@ -31,10 +33,18 @@ const Dashboard = () => {
   const [deleteLoading, setDeleteLoading] = useState(false);
 
   const [filter, setFilter] = useState("");
+  const [contentType, setContentType] = useState<FilterType>("all");
 
-  const filteredContents = contents.filter((content) =>
-    content.title.toLowerCase().includes(filter.toLowerCase())
-  );
+  const filteredContents = contents.filter((content) => {
+    const matchesSearch = content.title
+      .toLowerCase()
+      .includes(filter.toLowerCase());
+
+    const matchesType =
+      contentType === "all" ? true : content.type === contentType;
+
+    return matchesSearch && matchesType;
+  });
 
   const shareBrain = async () => {
     try {
@@ -115,7 +125,13 @@ const Dashboard = () => {
 
   return (
     <>
-      <SideBar />
+      <SideBar
+        selectedType={contentType}
+        onSelect={(type) => {
+          setContentType(type);
+          setFilter("");
+        }}
+      />
       <div className="min-h-screen bg-gray-100 p-4 md:ml-72 transition-all duration-300">
         <CreateContentModal
           open={modalOpen}
