@@ -109,4 +109,44 @@ const loginUser = async (req: Request, res: Response) => {
     }
 };
 
-export { registerUser, loginUser };
+const getMe = async (req: Request, res: Response) => {
+    try {
+        // @ts-ignore
+        const userId = req.user?._id;
+
+        if (!userId) {
+            return res.status(403).json({
+                success: false,
+                message: "You are not loggedIn",
+            });
+        }
+        const user = await User.findById(userId).select("username email");
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not registered",
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "User fetched successfully",
+            user: {
+                username: user.username,
+                email: user.email,
+            },
+        });
+    } catch (error) {
+        console.error("ERROR FETCHING USER: ", error);
+        return res.status(500).json({
+            success: false,
+            message:
+                error instanceof Error
+                    ? error.message
+                    : "Internal server error",
+        });
+    }
+};
+
+export { registerUser, loginUser, getMe };
