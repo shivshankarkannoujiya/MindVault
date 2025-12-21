@@ -11,6 +11,7 @@ export const envSchema = z.object({
     MONGO_URI: z.string(),
     JWT_SECRET: z.string().min(32),
     JWT_EXPIRY: z.string().default("1d"),
+    PERPLEXITY_API_KEY: z.string()
 });
 
 export type EnvConfig = z.infer<typeof envSchema>;

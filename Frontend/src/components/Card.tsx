@@ -4,6 +4,10 @@ import XIcon from "../icons/XIcon";
 import Tweet from "./Tweet";
 import YoutubeIcon from "../icons/YoutubeIcon";
 import toast from "react-hot-toast";
+import axios from "axios";
+import { BACKEND_URL } from "../config";
+import SparkaleIcon from "../icons/SparkaleIcon";
+import { useState } from "react";
 
 interface CardProps {
   title: string;
@@ -19,6 +23,28 @@ const getYouTubeId = (link: string) => {
 };
 
 const Card = ({ title, link, type = "twitter", onDelete }: CardProps) => {
+  const [summary, setSummary] = useState<String | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleAISummarize = async () => {
+    setIsLoading(true);
+    try {
+      const response = await axios.post(
+        `${BACKEND_URL}/ai/summarize`,
+        {
+          url: link,
+        },
+        { withCredentials: true }
+      );
+      setSummary(response.data.summary);
+      toast.success("AI Summary generated!");
+    } catch (error) {
+      toast.error("AI was unable to read this link.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handleShareSingleCardLink = async () => {
     try {
       navigator.clipboard.writeText(link);
@@ -46,6 +72,18 @@ const Card = ({ title, link, type = "twitter", onDelete }: CardProps) => {
         </div>
         <div className="flex gap-2">
           <div
+            // onClick={handleAISummarize}
+            className={`cursor-pointer transition ${
+              isLoading
+                ? "animate-pulse text-purple-400"
+                : "text-gray-400 hover:text-purple-600"
+            }`}
+            title="Summarize with AI"
+          >
+            <SparkaleIcon />
+          </div>
+
+          <div
             onClick={handleShareSingleCardLink}
             className="text-gray-400 cursor-pointer hover:text-purple-600 transition"
           >
@@ -67,6 +105,13 @@ const Card = ({ title, link, type = "twitter", onDelete }: CardProps) => {
         className="p-4 h-80 overflow-y-auto [&::-webkit-scrollbar]:hidden"
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
+        {summary && (
+          <div className="mb-4 p-3 bg-purple-50 rounded-lg border border-purple-100 text-xs text-slate-700 animate-in fade-in slide-in-from-top-1">
+            <p className="font-bold text-purple-800 mb-1">AI INSIGHT:</p>
+            {summary}
+          </div>
+        )}
+
         {type === "youtube" && (
           <iframe
             className="w-full aspect-video rounded-lg"

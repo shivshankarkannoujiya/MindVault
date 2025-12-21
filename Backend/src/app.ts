@@ -21,9 +21,11 @@ app.use(cookieParser());
 import userRouter from "./routes/user.route.js";
 import contentRouter from "./routes/content.route.js";
 import linkRouter from "./routes/link.route.js";
+import aiRouter from "./routes/ai.route.js"
 
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/contents", contentRouter);
 app.use("/api/v1/brain", linkRouter);
+app.use("/api/v1/ai", aiRouter);
 
 export default app;
